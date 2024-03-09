@@ -1,0 +1,105 @@
+
+This exercise consists of the following files:
+
+  RDBMS.py
+    A simple "relational database management system", which implements
+    relational algebra operations for querying a database consisting of
+    one or more relations.
+
+  relalg.py
+    Datatype for expressions in relational algebra, which represent queries
+    to a relational database. Interfaces to RDBMS.py to implement the queries.
+
+  predlogic2.py
+    Formulas in the predicate logic, and their translation to expressions
+    in the relational algebra, for database querying. The free variables
+    in the formulas will be queried values in a database.
+
+  test-cases.py
+    Contains the following to test the above:
+      A database containing data about family relations: the 2-place 'parent'
+         relation, and the unary 'female' and 'male' relations.
+      Definitions of "derived" predicates in the predicate logic, based on
+         'parent', 'male', 'female', including sibling, cousin, sister,
+	 brother, uncle, aunt etc.
+      Code to map predicate logic formulas to ones in which the derived
+         predicates have been replaced by their definitions. When only
+	 those predicates occur in a formula that are represented in
+	 a database as a table, then this formula can be queried from the DB.
+      Example queries and code to execute them.
+
+To do:
+1. Copy template-predlogic2.py to predlogic2.py
+2. See how some of the sample formulas are translated to RA
+   and queried from the database by writing:
+     python3 test-cases.py
+3. Complete the method 'fma2RA' for NOT and FORALL so that
+   all test cases go through and produce correct results.
+   Check the results against the family tree DENMARK.jpg.
+   Implement FORALL directly as a relational algebra operation,
+   without reducing it to existential quantification.
+4. Once you are convinced that everything works perfectly, submit.
+
+
+Difference to the previous exercise in which queries about predicate
+logic formulas were answered with a theorem prover (which tested
+for logical consequence) is that the contents of the relational database
+are viewed as one valuation / structure, which gives a single
+unambiguous truth-value to every atomic fact: if a tuple (o1,...,on)
+is in a relation R, then the fact R(o1,...,on) is TRUE, and
+otherwise the fact R(o1,...,on) is false.
+
+The problem a DBMS solves here is to figure out the values of _free_
+variables occurring in a formula so that the formula would be TRUE.
+So the values of these free variables are what is being queried
+from the database.
+
+Note that for formulas with no free variables, what is being
+done here with relational algebra is exactly the same as
+evaluation of predicate logic formulas w.r.t. a given structure.
+When the number of objects in the universe is high (in the thousands
+or or more) and the relations are relatively small, then this
+evaluation by using relational algebra can be far more efficient
+than a straightforward implementation of the evaluation of formulas
+in the predicate logic, as no exhaustive iteration over all possible
+value combinations for (quantified) variables is needed.
+
+To illustrate the difference between theorem proving (logical consequence)
+and evaluating the value of a formula, consider the following example.
+
+In the theorem-proving case, consider the formulas
+  parent(john,jill)
+  parent(john,jack)
+  male(john)
+  forall x(father(x) <-> exists y (parent(x,y)) and male(x))
+  forall x(female(x) <-> not male(x))
+One logical consequence of this database is father(john), but for
+example we would not know if 'parent(jill)', 'male(jill)' or 'female(jill)',
+as none of these formulas are logical consequences of the set.
+Also, the only interesting _negative_ piece of information we can infer
+is 'not female(john)'.
+All this goes back to the fact that a set of formulas in general represents
+multiple possible scenarios: all those scenarios in which the formulas
+are true. Here there are two possibilies, Jill is male or female, and
+Jack is male or female. Also, whether other parent relations hold than
+just (john,jack) and (john,jill) is left completely open.
+
+Now, we consider a similar-looking database (structure, valuation),
+with the binary relation
+  parent = {(john,jill),
+            (john,jack)}
+the unary relation
+  male = {john}
+and the definitions of derived predicates 'female' and 'father':
+  forall x(father(x) <-> exists y (parent(x,y)) and male(x))
+  forall x(female(x) <-> not male(x))
+The story here is completely different: the database represents exactly
+one possible scenario: the 'male' relation tells exactly who is male and
+who is not: Jill is not male, and neither is Jack. Similary only parent
+relations are (John,Jill) and (John,Jack), and this relation does not hold
+between any other pairs of individuals.
+Further, by using the definitions we can determine that 'female(jill)'
+and 'female(jack)' must be true, and hence 'not father(jill)' and
+'not father(jack)' must be true. None of these conlusions are possible
+with logical consequence as discussed above, as the formula set in that
+case allows multiple possible scenarios, not only one as in the database case.
