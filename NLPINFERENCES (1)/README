@@ -1,0 +1,213 @@
+
+You need to have the Ply lexer/parser generator installed for
+your Python. translate.py will not run without it.
+
+FILES:
+
+   predlogic.py
+
+     Representations for formulas in the predicate logic
+
+  translate.py
+
+     This contains the parser and the translation from English
+     to the predicate logic.
+
+     It reads a file with English sentences, and does the translation,
+     and outputs the formulas to the display as well as to a file
+     in the TPTP format.
+     If the file contains a line ==============, then what is output
+     to the TPTP formatted file is for a logical consequence test
+     of the formula after that line from the formulas before
+     the line.
+
+     For this logical consequence test translate.py includes
+     a collection of formulas about family relations,
+     defining concepts such as mother, father, grandparent,
+     and expressing relations between these concepts.
+     These are necessary for many of the inferences in the
+     sample files given.
+
+     translate.py implements a couple of grammar rules that were
+     not given in the lecture material, e.g. adjectives and
+     the genitives "mother of John" and "John's mother".
+     Read and understand these rules. Their implementation,
+     including the semantics, is similar to the other rules.
+
+     If you are interested, you can find lots of predicate logic
+     example at https://www.tptp.org/, including all kind of
+     mathematical problems, puzzles, et cetera.
+
+   gkc
+
+     This is a Linux binary for the GKC automated theorem prover
+     for the predicate logic. It has been downloaded from
+
+       https://github.com/tammet/gkc/releases
+
+     If you want to run gkc under Windows or Mac, you can find
+     the binaries at
+
+       http://logictools.org/
+
+     One option is to log in to the Aalto Linux computers and
+     run gkc there if difficulties with Windows or Mac binaries
+     emerge.
+
+   GKC
+
+     This is a Perl script that calls ./gkc and only outputs
+     the most interesting information, namely, whether the formulas
+     are unsatisfiable / whether logical consequence holds, and
+     what is the runtime.
+
+   TEXT1, TEXT2
+
+     English sentences to test the translation
+
+     You can try these by writing something like
+
+        python3.8 translate.py TEXT1
+
+     The output will show the translations of all the English
+     sentences in TEXT1 in the predicate logic. Notice that
+     the implication connective -> has been reduced to NOT and OR,
+     by the equivalence (A -> B) = (NOT A) V B, so some formulas
+     might not look exactly what you would expect.
+
+   CONSEQUENCE1, CONSEQUENCE2, ...
+
+     Inferences to be performed from given premises to a conclusion,
+     expressed in sentences in English.
+
+     You can try these by first writing something like
+
+        python3.8 translate.py CONSEQUENCE1 CONS1.TPTP
+
+     and then feeding CONS1.TPTP to GKC:
+
+        ./gkc CONS1.TPTP
+        ./GKC CONS1.TPTP
+
+     See instructions below to understand the TPTP syntax
+     and the output from GKC.
+
+YOUR TASK:
+
+   The four files INFERENCE{1,2,3,4}.template contain inferences
+   that are not valid in the sense that the conclusion does not
+   logically follow from the assumptions. Your task is to come
+   up with an additional assumption.
+
+   Look at the variable 'familyrelations' in translate.py for
+   the background theory on concepts related to family relations.
+   These are always included in the inferences (see the TPTP output
+   produced by translate.py).
+
+   Specific type of things that are NOT automatically assumed include
+   - whether two different names refer to two different persons,
+   - whether somebody is male or female (e.g. we do not know if
+     somebody called "John" is female or male.)
+
+   As a simple example, the inference
+
+     John is Jane's parent.
+     ======================
+     John is Jane's father.
+
+   is not logically correct because we do not know if John is male.
+   In this case you could add the assumption "John is a male."
+   The resulting inference
+
+     John is Jane's parent.
+     John is a male.
+     ======================
+     John is Jane's father.
+
+   is correct, and gkc would confirm the logical consequence holds.
+
+   Note that the following ARE NOT solutions to the exercise:
+     1. Adding the conclusion as an assumption above the line.
+     2. Adding something that makes the assumptions inconsistent.
+   Both of these make the logical consequence hold, but obviously
+   would not be a genuine solution to the problem.
+
+   1. Read and understand translate.py to get an idea what is going
+      on. Try the examples CONSEQUENCE{1,2,3,...} by translating
+      them to predicate logic formulas in the TPTP syntax, and
+      solve them with gkc/GKC.
+
+      python3 translate.py CONSEQUENCE1 CONSEQ1.TPTP
+      ./gkc CONSEQ1.TPTP
+      
+   1. Copy each INFERENCE{1,2,3,4}.template to INFERENCE{1,2,3,4}.
+   2. Find the missing assumptions to INFERENCE{1,2,3,4} and
+      test with GKC that the logical consequence now holds.
+   3. Copy the added assumptions to the file ADDITIONAL. The format
+      of this file is
+
+      1,"John is a male."
+      2,"John is a male."
+      3,"John is a male."
+      4,"John is a male."
+
+      Be careful with the syntax. Sentences must end in a full stop,
+      and the sentences must conform to the English grammar given
+      in translate.py. See examples in CONSEQUENCES{1,2,3,...}.
+
+   4. Submit your solution in A+.
+
+THE TPTP SYNTAX FOR FIRST-ORDER FORMULAS IN THE PREDICATE LOGIC:
+
+   A file in the TPTP format consists formulas such as
+
+     fof(formula25,axiom, (? [X] : (mother(X,john) & sleeps(X)))).
+     fof(formula26,axiom, (? [X] : (mother(X,john) & sees(X,john)))).
+     fof(formula29,axiom, (~ (john = jack))).
+
+   In the first of these three,
+      "formula25" is the name of the formula,
+      "axiom" means that the formula is taken as is, and
+      ? [X] : (mother(X,john) & sleeps(X)) is the formula itself.
+
+   The syntax for connectives and quantifiers in TPTP is as follows:
+      "? [X] :" denotes existential quantification of the variable X
+      "! [X] :" denotes universal quantification of the variable X
+      &         denotes conjunction
+      |         denotes disjunction
+      ~         denotes negation
+      Identifiers in lower case are constant, function and predicate
+      symbols.
+      Identifiers in upper case are variables.
+
+   Instead of "axiom", a formula can be a "conjecture", which means
+   that will be negated, and the satisfiability test the theorem prover
+   performs is a logical consequence test of axioms |= conjecture.
+   If a proof is found, then the logical consequence holds.
+   If the set is satisfiable, then the logical consequence does not hold.
+   If the result is inconclusive, then we don't know.
+
+DOWNLOAD GKC: https://github.com/tammet/gkc/releases
+RUNNING GKC:
+
+GKC takes the name of a TPTP formatted file in the command line.
+translate.py produces such files (by default called OUTPUT.TPTP).
+
+  If the formula is satisfiable (or logical consequence does not hold)
+  GKC either runs for a long time (or forever) or says "proof not found".
+
+  Otherwise the program says "proof found" and outputs a resolution refutation
+  (which is usually long and not really readable unless you are an expert in
+  predicate logic theorem proving.)
+
+  With the given examples, GKC determines logical consequence (unsatisfiability)
+  very quickly, usually in a second. If you experiment with other sets of
+  formulas that are satisfiable, the runs may take long, several minutes
+  or more. This is a symptom of the semi-decidability of the predicate
+  logic: there is no general effective termination condition for
+  predicate logic theorem-proving. Under some rather strict restrictions
+  on the types and nesting of quantification and the use of function
+  symbols, the predicate logic is decidable (termination of the inference
+  algorithms is guaranteed), but it is still not nearly as well
+  scalable as the propositional logic (in applications in which either
+  could be used.)

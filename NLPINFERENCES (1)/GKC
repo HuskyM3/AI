@@ -1,0 +1,41 @@
+#!/usr/bin/env perl
+# Jussi Rintanen (C) 2023
+#
+
+sub quote {
+  $filenamebase = $_[0];  
+  $filenamebase =~ s/ /\\ /g; # Precede blanks with backslashes.
+  $filenamebase =~ s/\&/\\\&/g; # Precede et with backslashes.
+  $filenamebase =~ s/\(/\\\(/g; # Precede parentheses with backslashes.
+  $filenamebase =~ s/\)/\\\)/g; # Precede parentheses with backslashes.
+  $filenamebase =~ s/\[/\\\[/g; # Precede brackets with backslashes.
+  $filenamebase =~ s/\]/\\\]/g; # Precede brackets with backslashes.
+  $filenamebase =~ s/\{/\\\{/g; # Precede braces with backslashes.
+  $filenamebase =~ s/\}/\\\}/g; # Precede braces with backslashes.
+  $filenamebase =~ s/\'/\\\'/g; # Precede quotes with backslashes.
+  return $filenamebase;
+}
+
+
+if(($ARGV[0] cmp "") != 0) {
+    $tptpfilename = $ARGV[$i];
+    @tptprun = `./gkc $tptpfilename`;
+
+    $prooffound = 0;
+
+    for(@tptprun) {
+	if(/result: proof found/) {
+	    $prooffound = 1;
+	}
+	if(/this run seconds: ([\d.]+)/) {
+	    $runtime = $1;
+	}
+    }
+    if($prooffound == 1) {
+	print "Proof found: formulas unsatisfiable / logical consequence holds!\n";
+    }
+    if($prooffound == 0) {
+	print "No proof found: formulas may be satisfiable / logical consequence might not hold!\n";
+    }
+    print "Runtime: $runtime\n";
+}

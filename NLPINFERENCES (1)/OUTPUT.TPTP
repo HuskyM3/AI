@@ -1,0 +1,30 @@
+fof(formula1,axiom, (! [X] : ! [Y] : ((~ mother(X,Y) | (female(X) & parent(X,Y))) & (~ (female(X) & parent(X,Y)) | mother(X,Y))))).
+fof(formula2,axiom, (! [X] : ! [Y] : ((~ father(X,Y) | (male(X) & parent(X,Y))) & (~ (male(X) & parent(X,Y)) | father(X,Y))))).
+fof(formula3,axiom, (! [X] : ! [Y] : ((~ sister(X,Y) | (female(X) & sibling(X,Y))) & (~ (female(X) & sibling(X,Y)) | sister(X,Y))))).
+fof(formula4,axiom, (! [X] : ! [Y] : ((~ brother(X,Y) | (male(X) & sibling(X,Y))) & (~ (male(X) & sibling(X,Y)) | brother(X,Y))))).
+fof(formula5,axiom, (! [X] : ! [Y] : ((~ aunt(X,Y) | (female(X) & ? [Z] : (sibling(X,Z) & parent(Z,Y)))) & (~ (female(X) & ? [Z] : (sibling(X,Z) & parent(Z,Y))) | aunt(X,Y))))).
+fof(formula6,axiom, (! [X] : ! [Y] : ((~ uncle(X,Y) | (male(X) & ? [Z] : (sibling(X,Z) & parent(Z,Y)))) & (~ (male(X) & ? [Z] : (sibling(X,Z) & parent(Z,Y))) | uncle(X,Y))))).
+fof(formula7,axiom, (! [X] : ! [Y] : ((~ nephew(X,Y) | (male(X) & ? [Z] : (sibling(Y,Z) & parent(Z,X)))) & (~ (male(X) & ? [Z] : (sibling(Y,Z) & parent(Z,X))) | nephew(X,Y))))).
+fof(formula8,axiom, (! [X] : ! [Y] : ((~ grandmother(X,Y) | (female(X) & grandparent(X,Y))) & (~ (female(X) & grandparent(X,Y)) | grandmother(X,Y))))).
+fof(formula9,axiom, (! [X] : ! [Y] : ((~ grandparent(X,Y) | ? [Z] : (parent(X,Z) & parent(Z,Y))) & (~ ? [Z] : (parent(X,Z) & parent(Z,Y)) | grandparent(X,Y))))).
+fof(formula10,axiom, (! [X] : ! [Y] : ((~ sibling(X,Y) | ? [Z] : (~ (X = Y) & (parent(Z,X) & parent(Z,Y)))) & (~ ? [Z] : (~ (X = Y) & (parent(Z,X) & parent(Z,Y))) | sibling(X,Y))))).
+fof(formula11,axiom, (! [X] : ! [Y] : ((~ cousin(X,Y) | ? [Z] : ? [U] : (parent(Z,X) & (parent(U,Y) & sibling(Z,U)))) & (~ ? [Z] : ? [U] : (parent(Z,X) & (parent(U,Y) & sibling(Z,U))) | cousin(X,Y))))).
+fof(formula12,axiom, (! [X] : ! [Y] : ((~ daughter(X,Y) | (female(X) & parent(Y,X))) & (~ (female(X) & parent(Y,X)) | daughter(X,Y))))).
+fof(formula13,axiom, (! [X] : ~ (female(X) & male(X)))).
+fof(formula14,axiom, (! [X] : ! [Y] : ((~ sibling(X,Y) | sibling(Y,X)) & (~ sibling(Y,X) | sibling(X,Y))))).
+fof(formula15,axiom, (! [X] : ! [Y] : ! [Z] : (~ sibling(X,Y) | ((~ parent(Z,X) | parent(Z,Y)) & (~ parent(Z,Y) | parent(Z,X)))))).
+fof(formula16,axiom, (! [X] : ! [Y] : ! [Z] : (~ (mother(X,Y) & mother(Z,Y)) | (X = Z)))).
+fof(formula17,axiom, (! [X] : ! [Y] : ! [Z] : (~ (father(X,Y) & father(Z,Y)) | (X = Z)))).
+fof(formula18,axiom, (sees(john,mary))).
+fof(formula19,axiom, (sleeps(john))).
+fof(formula20,axiom, (? [X] : (man(X) & sees(X,mary)))).
+fof(formula21,axiom, (? [X] : (man(X) & ? [Y] : (woman(Y) & sees(X,Y))))).
+fof(formula22,axiom, (? [X] : (? [Y] : (man(Y) & mother(X,Y)) & sleeps(X)))).
+fof(formula23,axiom, (? [X] : (mother(X,john) & sleeps(X)))).
+fof(formula24,axiom, (? [X] : (mother(X,john) & sees(X,john)))).
+fof(formula25,axiom, (? [X] : (mother(X,john) & ? [Y] : (mother(Y,mary) & sees(X,Y))))).
+fof(formula26,axiom, (? [X] : (mother(X,john) & ? [Y] : (mother(Y,mary) & (X = Y))))).
+fof(formula27,axiom, (? [X] : (mother(X,john) & ~ (X = mary)))).
+fof(formula28,axiom, (~ (john = jack))).
+fof(formula29,axiom, (happy(john))).
+fof(formula30,axiom, (? [X] : ((man(X) & snores(X)) & happy(X)))).
