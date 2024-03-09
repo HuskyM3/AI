@@ -1,0 +1,37 @@
+
+# Your task is to give 5 formulas so that each formula is true in STRUCT-2-T
+# and false in STRUCT-2-F.
+# Each formula HAS TO HAVE exactly one occurrence of the predicate symbols listed below.
+
+#
+# Formula 1
+#
+# Requirement: use predicates likes, happy
+#
+exists x (happy(x) & forall y likes(x,y))
+#
+# Formula 2
+#
+# Requirement: use predicates happy, calm
+# 
+forall x (happy(x) => not calm(x))
+#
+# Formula 3
+#
+# Requirement: use predicates calm, owesmoneyto 
+# calm and not own money 
+#exists x (calm(x) => forall y (not owesmoneyto(x,y)))
+forall x (calm(x) => not exists y (owesmoneyto(x,y)))
+#
+# Formula 4
+#
+# Requirement: use predicates hasmuchmoremoney, happy
+#
+forall x (happy(x) => forall y (not hasmuchmoremoney(x,y)))
+
+# Formula 5
+#
+# Requirement: use predicates hasmuchmoremoney, likes
+#
+forall x forall y (hasmuchmoremoney(x,y) => exists z (likes(z,y)))
+

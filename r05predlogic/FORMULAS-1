@@ -1,0 +1,29 @@
+
+# Here are the formulas that must be satisfied (= made true) by the structure
+# given in STRUCT-2. Modify STRUCT-2 so that all these formulas are true.
+#
+# DO NOT MODIFY THIS FILE!
+#
+
+# Formulas about family relations
+
+forall x (father(x) <=> (male(x) & exists y parent(x,y)))
+
+forall x forall y (sibling(x,y) <=> x != y & exists z (parent(z,x) & parent(z,y)))
+
+forall x forall z (grandparent(x,z) <=> exists y (parent(x,y) & parent(y,z)))
+
+parent(Jack,Mary)
+parent(Jack,John)
+grandparent(Jack,Anne)
+father(Jack)
+
+forall x forall y (male(x) & female(y) => x != y)
+
+
+# Formulas about connections in a graph
+
+exists x connect(x,x)
+exists x exists y exists z (connect(x,y) & connect(y,z) & connect(z,x) & x != y & y != z & z != x)
+forall x forall y (connect(x,y) => P(x) | P(y))
+forall x exists y (connect(x,y) => not P(x) | not P(y))

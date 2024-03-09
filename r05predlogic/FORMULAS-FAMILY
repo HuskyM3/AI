@@ -1,0 +1,27 @@
+
+# These are some formulas that are true in the structure in STRUCT-FAMILY.
+# Notice that these formulas are FALSE in many other structures. In particular,
+# the 'parent' relation does not have to be aymmetric and could well contain
+# cycles of length 2. It completely depends on how we define that relation.
+# Of course, 'parent' relations with cycles in them would not correspond
+# to the reality, but there is nothing illogical in them per se.
+
+
+# The parent relation is asymmetric.
+
+forall x forall y (parent(x,y) => not parent(y,x))
+
+
+# The parent relation has no cycles of length 2.
+
+forall x forall y forall z (parent(x,y) & parent(y,z) => x != z)
+
+
+# The person designated by GRANPA is a grandparent of a male person.
+
+exists x exists y (parent(GRANPA,x) & parent(x,y) & male(y))
+
+
+# Everybody has a male parent or a male child.
+
+forall x ( (exists y (parent(y,x) and male(y))) or (exists z (parent(x,z) and male(z))))

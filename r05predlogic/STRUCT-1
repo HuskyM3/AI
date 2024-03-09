@@ -1,0 +1,52 @@
+
+# TASK: Define a structure so that formulas in FORMULAS-1 are true in it.
+
+# First define the universe. It has to be non-empty. Otherwise you are free
+# to choose its elements. The elements here can be integers and alpha-numeric
+# identifiers. Note that the elements in the universe cannot be referred to
+# in the formulas directly. All references to the elements are either through
+# a constant symbol (with a fixed element of the universe attached to each
+# constant symbol), or through quantification FORALL and EXISTS, which iterate
+# through all elements of the universe.
+# If you find the distinction between constant symbols and the entities in
+# the universe confusing, you could use numbers 0, 1, 2, ... as the universe.
+
+# The universe
+
+{ 1, 2, 3, 5, 6 }
+
+# Next you define the meanings of the predicates. Each predicate is associated with
+# a set (1-place relation) or a relation (one or more places/columns) over the universe.
+# The sets/relations can be empty or non-empty.
+# Each predicate definition has the form 'name / arity = { }', where 'name' is
+# the predicate's name and the 'arity' is an integer that indicates how many
+# places/columns the predicate has.
+
+# The predicates
+
+connect / 2 = { (1,1), (2,2), (3,3), (4,4), (1,2), (1,3), (1,4), (2,1), (2,3), (2,4), (3,1), (3,2), (3,4), (4,1), (4,2), (4,3)}
+
+P / 1 = { 1,2,3,4 }
+
+parent / 2 = { (3,1), (3,2)}
+grandparent / 2 = {(3,4)}
+sibling / 2 = { (1,2), (2,1)}
+male / 1 = {2,3 }
+female / 1 = { 1,4}
+father / 1 = { 3}
+
+# Constant symbols are "names" that can be referred to in the formulas.
+# Each constant symbols is associated with one element of the universe.
+# More than one symbol can be associated with the same element.
+
+# Constant symbols
+
+Mary = 1
+John = 2
+Jack = 3
+Anne = 4
+
+# Hint: Since the predicates and constants about family relations are
+# disjoint from the ones in graphs/connections, you can freely choose if
+# you use the same universe elements in both categories of predicates,
+# of if you decide to use disjoint sets of universe elements for each.

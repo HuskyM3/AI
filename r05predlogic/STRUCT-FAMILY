@@ -1,0 +1,18 @@
+
+# universe
+
+{ john, mary, jukka, jaana, torsti, tuula, saku }
+
+# predicates
+
+parent / 2 = { (john,mary), (john,jukka),
+               (mary,torsti),
+	       (jukka, tuula), (jukka, jaana),
+	       (saku, torsti) }
+
+male / 1 = { john, jukka, torsti, saku }
+female / 1 = { mary, jaana, tuula }
+
+# constant symbols
+
+GRANPA = john

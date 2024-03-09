@@ -1,0 +1,18 @@
+
+# This is the structure STRUCT-2-T.
+#
+# DO NOT MODIFY THIS FILE!
+#
+# Your formulas in FORMULAS-2 should all be TRUE in this structure.
+
+{ a, b, c, d, e, f }
+
+likes / 2 = { (a,a), (a,b), (a,c), (a,d), (a,e), (a,f), (b,c) }
+
+happy / 1 = { a, b, c }
+
+calm / 1 = { d, e, f }
+
+owesmoneyto / 2 = { (a,f), (b,d), (c,e), (a,d), (b,f) }
+
+hasmuchmoremoney / 2 = { (d,b), (f,c), (e,a) }
