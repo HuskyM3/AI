@@ -1,0 +1,137 @@
+
+To run the SAT solver you need
+  Python 3.x
+  PLY, which is a parser/lexer tool for Python
+
+Additionally you need an SMT solver. There are two options:
+
+Option 1: PySMT with the MathSAT solver installed in Linux as follows:
+
+  sudo apt-get install python3 python3-ply
+  pip install pysmt
+  pysmt-install --msat
+  cp formulas_mathsat.py formulas.py
+
+Option 2: z3-solver installed in Linux as follows:
+  pip install z3-solver
+  cp formulas_z3.py formulas.py
+
+It seems that the Python interface to Z3 has less overhead than
+the interface in PySMT, and Z3 might hence be a bit faster.
+
+
+Call the solver with a command line of the form
+
+  python3 qsolver.py INPUT.SPEC
+
+where the file INPUT.SPEC contains a formula in the propositional logic.
+
+See the sample files *.SPEC for syntax.
+
+The formulas are described in terms of the following.
+
+  The 'type' keyword is used for associated a set of integers or
+  alphanumeric string with a name. Sets can be formed by listing
+  them as a comma-separated list inside curly braces, e.g. { 1, 2, 3 },
+  or they can be formed by the union U and difference - operations
+  from smaller sets, or they can be referred to through a type name
+  defined earlier.
+
+  The 'predicates' keyword is used in definitions of predicate symbols.
+  A predicate symbol is an alphanumeric string that starts with an
+  upper case letter. The arity (how many places does the predicate
+  have?) is given after a slash /. An example:
+
+    predicates AtLocation / 3, Student / 1;
+
+  The 'variables' keyword defines 0-ary predicates. An example:
+
+    variables A, B, C;
+
+  The rest of the file consists of formulas, the conjunction of
+  which is the formula for which the solver tests satisfiability.
+
+All predicate names and names of atomic propositions must start with
+an upper-case letter.
+
+All variables quantified by 'forall' or other quantifiers must start
+with a lower-case letter.
+
+The solver parses the file and gives it to the MathSAT solver, which
+determines if the variables can be given truth-values so that
+the formula is TRUE. If one or more such satisfying assignments exists,
+one of them is output. If none exists, the solver will say so.
+
+The syntax supports the following connectives:
+   not         negation
+   and  &      conjunction
+   or  |       disjunction
+   xor         exclusive or
+   ->  impl    implication
+   <->  eqvi   equivalence
+
+Additionally, there are the following quantifiers with parameters.
+
+   forall          Universal quantification
+   exists forsome  Existential quantification
+   atleast N       Cardinality lower bound
+   atmost N        Cardinality upper bound
+   exactly N       Cardinality
+
+These all take one or parameters with which the formula that
+follows is instantiated in all possible ways.
+
+Consider the following formula with 'atmost' quantification.
+
+   atmost 3 (p : { john,mary,jack,jill}) Chosen(p);
+
+First, the body of the formula 'Chosen (p)' is instantiated in
+all possible ways with all value combinations of the quantified
+variables. In this case there is only one variable 'p', and it
+can have 4 different values. The instances are the following:
+
+   Chosen(john)
+   Chosen(mary)
+   Chosen(jack)
+   Chosen(jill)
+
+Then a conventional propositional formula is generated so that
+it is true if and only if at most three of the above four
+formulas are true. A possible formula would simply be
+
+  not(Chosen(john) and Chosen(mary) and Chosen(jack) and Chosen(jill)).
+
+For higher number of instances of the body and higher number of
+value combinations of the parameters, these formulas get quite
+large and complicated. The solver front-end uses a complex encoding
+of these constraints that has size O(N*M) where N is the number
+for the upper/lower bounds, and M is the number of parameter value
+combinations.
+
+The quantifiers can be nested in arbitrary ways. For example:
+
+  forall (x : {1,2,3}, y : {1,2,3})
+    atmost 3 (p : { john,mary,jack,jill})
+      AtLocation(p,x,y);
+
+Requiring that at each of the locations in the 3 X 3 grid,
+there are at most 3 persons.
+
+The requirement that each person is in no more than one
+location is expressed as follows.
+
+    forall (p : { john,mary,jack,jill})
+      atmost 1 (x : {1,2,3}, y : {1,2,3})
+        AtLocation(p,x,y);
+
+WARNING: The parser error handling is simplistic, and the error
+messages you might get for syntactically malformed input are
+not very informative.
+Make sure you declare all predicate symbols with the
+'predicates' keyword.
+
+
+# CanTeach(t,c)        Teacher t can teach class c
+# ClassTime(c,g,s)     Class c is taught to group g at time slot s.
+# ClassDay(c,g,d)      Class c is taught to group g on day d.
+# ClassTeacher(c,g,t)  Class c is taught to group g by teacher t.
