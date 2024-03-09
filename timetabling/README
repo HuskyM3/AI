@@ -1,0 +1,17 @@
+
+Instructions:
+1. Copy template-TimeTabling.SPEC to TimeTabling.SPEC
+2. Add missing constraints.
+3. qsolver.py TimeTabling.SPEC | ./showtimetable.perl
+4. Check that the schedule satisfies ALL requirements.
+5. If not, iterate from 2.
+6. Only submit after the schedule is perfect.
+
+For testing purposes you can reduce e.g. the number of groups,
+to make the schedule easier to verify.
+
+Reducing the number of time slots from 8..12 may make
+it impossible to find a schedule.
+
+Increasing the time slots e.g. to 8..13 or 8..14 makes
+finding schedules easier.
