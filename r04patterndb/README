@@ -1,0 +1,22 @@
+
+The goal of the exercise is to implement pattern database (PDB) heuristics for the 8-puzzle and its generalization to N X M puzzles.
+
+Code is given for the following.
+
+Npuzzle.py
+    State-space generation for N X M grids
+
+GBFS.py
+    The Greedy Best-First Search algorithm to test the heuristics with
+
+test-pdb.py
+    Tests for the code
+
+template-NpuzzlePDB.py
+    Code template, to be copied to NpuzzlePDB.py
+
+The task in this exercise is to implement the missing functionality in NpuzzlePDB.py, based on the given code.
+
+1. Construct an "abstract" goal state, with other tiles except the ones to be included in the PDB removed. You can use the method 'abstract' in Npuzzle.py.
+2. Compute the distance (length of shortest path) from every other state to the "abstract" goal state. (N-puzzle actions are all reversible, so distance from any state to the goal state is the same as the distance from the goal state to that state.) This is done by the function breadthFirstSearch, which you have to modify to record the distances.
+3. Construct the function that maps any state to its lower bound estimate and return it.
