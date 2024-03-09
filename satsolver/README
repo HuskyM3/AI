@@ -1,0 +1,44 @@
+
+To run the SAT solver you need
+  Python 3.x
+  PLY, which is a parser/lexer tool for Python
+  PySMT with the MathSAT solver installed
+
+To install these in some Linux variants (e.g. Ubuntu Linux), write:
+
+  sudo apt-get install python3 python3-ply
+  pip install pysmt
+  pysmt-install --msat
+
+Call the solver with a command line of the form
+
+  python3 solver.py INPUT.SPEC
+
+where the file INPUT.SPEC contains a formula in the propositional logic.
+
+See the sample files *.SPEC for syntax.
+
+The atomic propositions must be declared with the 'variables' keyword.
+The rest of the file contains one or more formulas, each ending in
+a semicolon, and they are implicitly joined together with
+the conjunction connective.
+
+The solver parses the file and gives it to the MathSAT solver, which
+determines if the variables can be given truth-values so that
+the formula is TRUE. If one or more such satisfying assignments exists,
+one of them is output. If none exists, the solver will say so.
+
+The syntax supports the following connectives:
+   not         negation
+   and, &      conjunction
+   or, |       disjunction
+   xor         exclusive or
+   ->, impl    implication
+   <->, eqvi   equivalence
+
+WARNING: The parser error handling is simplistic, and the error
+messages you might get for syntactically malformed input are
+not very informative.
+Make sure you declare all propositional variables with the
+'variables' keyword. If you don't, you will see syntax error
+messages that don't indicate the cause of the error in any way.
